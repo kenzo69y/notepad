@@ -1,0 +1,41 @@
+/* NOTE KENZO - layout fixes */
+
+/* Panel Catatan Saya berada di dalam .app. Gunakan batas .app,
+   bukan 100vh, supaya footer/tombol tidak terpotong oleh overflow:hidden. */
+.library-drawer{
+  position:absolute !important;
+  top:0 !important;
+  right:0 !important;
+  bottom:0 !important;
+  height:auto !important;
+  max-height:100% !important;
+  min-height:0 !important;
+}
+
+.drawer-backdrop{
+  position:absolute !important;
+  inset:0 !important;
+}
+
+.library-list{
+  flex:1 1 auto !important;
+  min-height:0 !important;
+  overflow-y:auto !important;
+  overscroll-behavior:contain;
+}
+
+.library-foot{
+  flex:0 0 auto !important;
+  padding:12px 14px max(16px, env(safe-area-inset-bottom)) !important;
+  background:#101720;
+}
+
+.library-new{
+  display:block;
+  width:100% !important;
+}
+
+/* Hilangkan nama catatan kecil di bawah NOTE KENZO. */
+.file-name{
+  display:none !important;
+}
