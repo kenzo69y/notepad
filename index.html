@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NOTE KENZO — Dark Notepad</title>
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app" id="app">
+    <header class="titlebar">
+      <div class="title-left">
+        <div class="app-icon">A</div>
+        <div>
+          <div class="app-name">NOTE KENZO</div>
+          <div class="file-name" id="fileName">Untitled</div>
+        </div>
+      </div>
+
+      <div class="title-actions">
+        <button class="icon-btn" id="themeBtn" title="Dark / Light Mode" aria-label="Toggle theme">
+          <span id="themeIcon">☾</span>
+        </button>
+      </div>
+    </header>
+
+    <nav class="menubar">
+      <div class="menu">
+        <button class="menu-btn" data-menu="file">File</button>
+        <div class="dropdown" id="menu-file">
+          <button id="newBtn"><span>New</span><kbd>Ctrl+N</kbd></button>
+          <button id="openBtn"><span>Open</span><kbd>Ctrl+O</kbd></button>
+          <button id="saveBtn"><span>Save</span><kbd>Ctrl+S</kbd></button>
+          <button id="saveAsBtn"><span>Save As</span><kbd>Ctrl+Shift+S</kbd></button>
+        </div>
+      </div>
+
+      <div class="menu">
+        <button class="menu-btn" data-menu="edit">Edit</button>
+        <div class="dropdown" id="menu-edit">
+          <button id="undoBtn"><span>Undo</span><kbd>Ctrl+Z</kbd></button>
+          <button id="redoBtn"><span>Redo</span><kbd>Ctrl+Y</kbd></button>
+          <div class="separator"></div>
+          <button id="selectAllBtn"><span>Select All</span><kbd>Ctrl+A</kbd></button>
+          <button id="findMenuBtn"><span>Find</span><kbd>Ctrl+F</kbd></button>
+        </div>
+      </div>
+
+      <div class="menu">
+        <button class="menu-btn" data-menu="format">Format</button>
+        <div class="dropdown wide" id="menu-format">
+          <div class="dropdown-label">Font</div>
+          <select id="fontSelect">
+            <option value="system">System</option>
+            <option value="consolas">Consolas</option>
+            <option value="mono">Monospace</option>
+            <option value="serif">Serif</option>
+          </select>
+
+          <div class="dropdown-label">Ukuran</div>
+          <div class="size-row">
+            <button id="fontMinus">−</button>
+            <span id="fontSizeLabel">16px</span>
+            <button id="fontPlus">+</button>
+          </div>
+
+          <label class="toggle-row">
+            <span>Word Wrap</span>
+            <input type="checkbox" id="wrapToggle" checked />
+          </label>
+        </div>
+      </div>
+
+      <div class="menu">
+        <button class="menu-btn" data-menu="view">View</button>
+        <div class="dropdown" id="menu-view">
+          <button id="focusBtn"><span>Focus Mode</span><kbd>F11</kbd></button>
+          <button id="resetZoomBtn"><span>Reset Font Size</span></button>
+        </div>
+      </div>
+    </nav>
+
+    <section class="toolbar">
+      <button class="tool-btn primary" id="toolbarNew">＋ New</button>
+      <button class="tool-btn" id="toolbarOpen">Open</button>
+      <button class="tool-btn" id="toolbarSave">Save</button>
+      <button class="tool-btn" id="libraryBtn">▣ Catatan</button>
+      <button class="tool-btn cloud-btn" id="cloudBtn"><span class="cloud-dot"></span> Cloud</button>
+
+      <div class="toolbar-spacer"></div>
+
+      <button class="tool-icon" id="toolbarUndo" title="Undo">↶</button>
+      <button class="tool-icon" id="toolbarRedo" title="Redo">↷</button>
+      <button class="tool-icon" id="toolbarFind" title="Find">⌕</button>
+    </section>
+
+
+    <section class="tabbar" id="tabbar">
+      <div class="tabs-scroll" id="tabsContainer"></div>
+      <button class="new-tab-btn" id="newTabBtn" title="Tab baru" aria-label="Tab baru">+</button>
+    </section>
+
+    <section class="findbar" id="findbar">
+      <input type="text" id="findInput" placeholder="Cari teks..." autocomplete="off" />
+      <div class="find-count" id="findCount">0 hasil</div>
+      <button id="findPrev" title="Sebelumnya">↑</button>
+      <button id="findNext" title="Berikutnya">↓</button>
+      <button id="closeFind" title="Tutup">✕</button>
+    </section>
+
+    <main class="editor-wrap">
+
+      <button class="copy-all-btn" id="copyAllBtn" type="button" title="Salin semua isi tab">
+        <span class="copy-icon">⧉</span>
+        <span class="copy-label">Salin</span>
+      </button>
+      <textarea
+        id="editor"
+        spellcheck="false"
+        placeholder="Mulai mengetik di sini..."
+        aria-label="Notepad editor"
+      ></textarea>
+    </main>
+
+    <footer class="statusbar">
+      <div class="status-left">
+        <span id="saveStatus"><span class="status-dot"></span> Tersimpan</span>
+      </div>
+
+      <div class="status-right">
+        <span id="lineCol">Ln 1, Col 1</span>
+        <span id="wordCount">0 words</span>
+        <span id="charCount">0 characters</span>
+        <span>UTF-8</span>
+      </div>
+    </footer>
+
+    <input type="file" id="fileInput" accept=".txt,text/plain" hidden />
+
+
+    <aside class="library-drawer" id="libraryDrawer" aria-hidden="true">
+      <div class="library-head">
+        <div>
+          <div class="library-title">Catatan Saya</div>
+          <div class="library-subtitle" id="librarySubtitle">Tersimpan di browser</div>
+        </div>
+        <button class="drawer-close" id="closeLibraryBtn" title="Tutup">×</button>
+      </div>
+      <div class="library-search-wrap">
+        <input id="librarySearch" type="text" placeholder="Cari catatan..." autocomplete="off" />
+      </div>
+      <div class="library-list" id="libraryList"></div>
+      <div class="library-foot">
+        <button class="tool-btn primary library-new" id="libraryNewBtn">＋ Catatan Baru</button>
+      </div>
+    </aside>
+
+    <div class="drawer-backdrop" id="drawerBackdrop"></div>
+
+    <div class="modal-backdrop cloud-modal-backdrop" id="cloudModal" aria-hidden="true">
+      <div class="modal cloud-modal">
+        <div class="cloud-modal-head">
+          <div>
+            <h2>Cloud Sync</h2>
+            <p id="cloudModalInfo">Login agar catatan bisa dibuka dari PC lain.</p>
+          </div>
+          <button class="drawer-close" id="closeCloudModal" title="Tutup">×</button>
+        </div>
+
+        <div id="cloudConfigWarning" class="config-warning" hidden>
+          Supabase belum dikonfigurasi. Isi <b>config.js</b> terlebih dahulu.
+        </div>
+
+        <div id="authForm">
+          <label class="auth-label">Email</label>
+          <input class="auth-input" id="authEmail" type="email" placeholder="email@contoh.com" autocomplete="email" />
+          <label class="auth-label">Password</label>
+          <input class="auth-input" id="authPassword" type="password" placeholder="Minimal 6 karakter" autocomplete="current-password" />
+          <div class="auth-status" id="authStatus" aria-live="polite"></div>
+          <div class="auth-actions">
+            <button class="tool-btn" id="signUpBtn" type="button">Daftar</button>
+            <button class="tool-btn primary" id="signInBtn" type="button">Masuk</button>
+          </div>
+        </div>
+
+        <div id="loggedInPanel" hidden>
+          <div class="account-card">
+            <span class="account-dot"></span>
+            <div>
+              <div class="account-label">Terhubung</div>
+              <div class="account-email" id="accountEmail">-</div>
+            </div>
+          </div>
+          <div class="sync-actions">
+            <button class="tool-btn primary" id="syncNowBtn">Sinkronkan Sekarang</button>
+            <button class="tool-btn" id="signOutBtn">Keluar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
